@@ -8,6 +8,8 @@ add_executable(path_sim main.cpp
         Game.h
         Window.cpp
         Window.h
+        Vertex.cpp
+        Vertex.h
 )
 
 set(SFML_STATIC_LIBRARIES TRUE)

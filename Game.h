@@ -8,6 +8,7 @@
 #include "Window.h"
 #include "Map.h"
 #include "Dijkstra.h"
+#include "Input.h"
 
 class Game {
 public:
@@ -19,6 +20,8 @@ public:
 private:
     Window window;
     Map map;
+    Input input;
+
     Dijkstra dijkstra;
 };
 

@@ -16,6 +16,7 @@ public:
     void CalculatePath();
     void SetStart(Vertex* start);
     void SetEnd(Vertex* end);
+    void Reset();
 private:
     Map map;
     Vertex* pVertexStart;

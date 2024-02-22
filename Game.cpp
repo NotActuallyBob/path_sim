@@ -7,7 +7,7 @@
 #include "Game.h"
 
 Game::Game()
-    : window("Path Simulator"), map(100, 50), dijkstra(map){
+    : window("Path Simulator"), map(100, 50), dijkstra(map), input(){
 
 }
 
@@ -16,6 +16,8 @@ bool Game::IsRunning() const {
 }
 
 void Game::Update() {
+    input.Update();
+
     Vertex* pVertexStart = nullptr;
     Vertex* pVertexNewWall = nullptr;
     Vertex* pVertexEnd = nullptr;
@@ -31,21 +33,30 @@ void Game::Update() {
         pVertexNewWall = map.GetVertexAtPosition(window.GetMousePosition());
     }
 
-    if(pVertexStart != nullptr) {
+    if(pVertexStart != nullptr && !pVertexStart->IsWall()) {
         dijkstra.SetStart(pVertexStart);
+        dijkstra.CalculatePath();
         dijkstra.MarkPath();
     }
-    if(pVertexEnd != nullptr) {
+    if(pVertexEnd != nullptr && !pVertexEnd->IsWall()) {
         dijkstra.SetEnd(pVertexEnd);
         dijkstra.MarkPath();
     }
     if(pVertexNewWall != nullptr) {
         pVertexNewWall->MakeWall();
+    }
+
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
         dijkstra.CalculatePath();
         dijkstra.MarkPath();
     }
 
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+        map.Clear();
+        dijkstra.Reset();
+    }
+
+    if(input.IsKeyUp(Input::Key::MiddleMosue)) {
         dijkstra.CalculatePath();
         dijkstra.MarkPath();
     }

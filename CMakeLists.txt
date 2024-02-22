@@ -16,6 +16,8 @@ add_executable(path_sim main.cpp
         Dijkstra.h
         PriorityQueue.cpp
         PriorityQueue.h
+        Input.h
+        Input.cpp
 )
 
 set(SFML_STATIC_LIBRARIES TRUE)

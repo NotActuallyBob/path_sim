@@ -28,11 +28,17 @@ void Dijkstra::MarkPath() {
 }
 
 void Dijkstra::SetStart(Vertex *start) {
+    if(pVertexStart != nullptr && !pVertexStart->IsWall()) {
+        pVertexStart->Color(sf::Color::White);
+    }
     pVertexStart = start;
     pVertexStart->Color(sf::Color::Green);
 }
 
 void Dijkstra::SetEnd(Vertex *end) {
+    if(pVertexEnd != nullptr && !pVertexEnd->IsWall()) {
+        pVertexEnd->Color(sf::Color::White);
+    }
     pVertexEnd = end;
     pVertexEnd->Color(sf::Color::Red);
 }
@@ -73,4 +79,11 @@ void Dijkstra::CalculatePath() {
     }
 
     isCalculated = true;
+}
+
+void Dijkstra::Reset() {
+    pVertexStart = nullptr;
+    pVertexEnd = nullptr;
+    map.Clear();
+    isCalculated = false;
 }

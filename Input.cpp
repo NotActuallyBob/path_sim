@@ -12,35 +12,41 @@ void Input::Update()
     currentFrameKeys = 0;
 
     if(sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-        currentFrameKeys = currentFrameKeys | 1 << (int)Key::LeftMouse;
+        currentFrameKeys = currentFrameKeys | (1 << (int)Key::LeftMouse);
     }
 
     if(sf::Mouse::isButtonPressed(sf::Mouse::Middle)) {
-        currentFrameKeys = currentFrameKeys | 1 << (int)Key::MiddleMosue;
+        currentFrameKeys = currentFrameKeys | (1 << (int)Key::MiddleMouse);
     }
 
     if(sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
-        currentFrameKeys = currentFrameKeys | 1 << (int)Key::RightMouse;
+        currentFrameKeys = currentFrameKeys | (1 << (int)Key::RightMouse);
     }
 }
 
-bool Input::IsKeyPressed(Key keycode)
+bool Input::IsKeyPressed(Key keycode) const
 {
-    return (currentFrameKeys && 1 << (int)keycode > 0);
+    bool isPressed = (((currentFrameKeys & (1 << (int)keycode)) > 0));
+    return isPressed;
 }
 
-bool Input::IsKeyDown(Key keycode)
+bool Input::IsKeyDown(Key keycode) const
 {
-    bool lastFrame = (lastFrameKeys && 1 << (int)keycode > 0);
-    bool thisFrame = (currentFrameKeys && 1 << (int)keycode > 0);
+    bool lastFrame = (((lastFrameKeys & (1 << (int)keycode)) > 0));
+    bool thisFrame = (((currentFrameKeys & (1 << (int)keycode)) > 0));
 
     return thisFrame && !lastFrame;
 }
 
-bool Input::IsKeyUp(Key keycode)
+bool Input::IsKeyUp(Key keycode) const
 {
-    bool lastFrame = (lastFrameKeys && 1 << (int)keycode > 0);
-    bool thisFrame = (currentFrameKeys && 1 << (int)keycode > 0);
+    bool lastFrame = (((lastFrameKeys & (1 << (int)keycode)) > 0));
+    bool thisFrame = (((currentFrameKeys & (1 << (int)keycode)) > 0));
 
     return !thisFrame && lastFrame;
+}
+
+Input::Input() {
+    currentFrameKeys = 0;
+    lastFrameKeys = 0;
 }

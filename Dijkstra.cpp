@@ -7,10 +7,14 @@
 #include <map>
 
 Dijkstra::Dijkstra(Map &map)
-    : map(map){
+    : map(map), pq(){
+    distance = std::map<unsigned int, unsigned int>();
+    prev = std::map<unsigned int, int>();
+
     pVertexStart = nullptr;
     pVertexEnd = nullptr;
     isCalculated = false;
+    isSolving = false;
 }
 
 void Dijkstra::MarkPath() {
@@ -43,12 +47,10 @@ void Dijkstra::SetEnd(Vertex *end) {
     pVertexEnd->Color(sf::Color::Red);
 }
 
-void Dijkstra::CalculatePath() {
-    if(pVertexStart == nullptr || pVertexEnd == nullptr) {
+void Dijkstra::InitCalculation() {
+    if(pVertexStart == nullptr || pVertexEnd == nullptr || isCalculated) {
         return;
     }
-
-    PriorityQueue pq = PriorityQueue();
 
     std::vector<Vertex *> allVertices = map.GetVertices();
 
@@ -63,22 +65,35 @@ void Dijkstra::CalculatePath() {
         }
         pq.AddVertex(distance[vertex->GetId()], vertex);
     }
+    isSolving = true;
+    searchedRadius = 1;
+}
 
-    while(!pq.IsEmpty()) {
-        Vertex* minVertex = pq.GetTop();
-        pq.RemoveVertex(minVertex);
-        for(auto it : map.GetNeighbors(minVertex)) {
-            unsigned int alt = distance[minVertex->GetId()] + minVertex->GetDistance(*it);
-            if(alt < distance[it->GetId()]) {
-                distance[it->GetId()] = alt;
-                prev[it->GetId()] = minVertex->GetId();
-                pq.RemoveVertex(it);
-                pq.AddVertex(alt, it);
-            }
+void Dijkstra::IterateCalculation() {
+    Vertex* minVertex = pq.GetTop();
+    pq.RemoveVertex(minVertex);
+    minVertex->Color(sf::Color::Cyan);
+    for(auto it : map.GetNeighbors(minVertex)) {
+        unsigned int alt = distance[minVertex->GetId()] + minVertex->GetDistance(*it);
+        if(alt < distance[it->GetId()]) {
+            distance[it->GetId()] = alt;
+            prev[it->GetId()] = minVertex->GetId();
+            pq.RemoveVertex(it);
+            pq.AddVertex(alt, it);
         }
     }
 
-    isCalculated = true;
+    if(pq.IsEmpty()){
+        isCalculated = true;
+        isSolving = false;
+        searchedRadius = 0;
+    } else {
+        if(pq.GetTop()->GetDistance(*pVertexStart) < searchedRadius) {
+            IterateCalculation();
+        } else {
+            searchedRadius++;
+        }
+    }
 }
 
 void Dijkstra::Reset() {
@@ -86,4 +101,19 @@ void Dijkstra::Reset() {
     pVertexEnd = nullptr;
     map.Clear();
     isCalculated = false;
+    isSolving = false;
+    searchedRadius = 0;
+}
+
+bool Dijkstra::IsSolving() const {
+    return isSolving;
+}
+
+bool Dijkstra::IsCalculated() const {
+    return isCalculated;
+}
+
+void Dijkstra::SetNotCalculated() {
+    isCalculated = false;
+    searchedRadius = 0;
 }

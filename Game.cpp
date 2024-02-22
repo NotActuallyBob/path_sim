@@ -16,39 +16,52 @@ bool Game::IsRunning() const {
 }
 
 void Game::Update() {
-    input.Update();
+    if(dijkstra.IsSolving()) {
+        dijkstra.IterateCalculation();
+        if(dijkstra.IsCalculated()) {
+            dijkstra.MarkPath();
+        } else {
+            return;
+        }
+    }
 
     Vertex* pVertexStart = nullptr;
     Vertex* pVertexNewWall = nullptr;
     Vertex* pVertexEnd = nullptr;
-    if(sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+
+    if(input.IsKeyPressed(Input::Key::LeftMouse)) {
         pVertexStart = map.GetVertexAtPosition(window.GetMousePosition());
+        dijkstra.InitCalculation();
+        if(dijkstra.IsCalculated()) {
+            dijkstra.MarkPath();
+        }
     }
 
-    if(sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
+    if(input.IsKeyPressed(Input::Key::RightMouse)) {
         pVertexEnd = map.GetVertexAtPosition(window.GetMousePosition());
+        dijkstra.InitCalculation();
+        if(dijkstra.IsCalculated()) {
+            dijkstra.MarkPath();
+        }
     }
 
-    if(sf::Mouse::isButtonPressed(sf::Mouse::Middle)) {
+    if(input.IsKeyPressed(Input::Key::MiddleMouse)) {
         pVertexNewWall = map.GetVertexAtPosition(window.GetMousePosition());
     }
 
     if(pVertexStart != nullptr && !pVertexStart->IsWall()) {
         dijkstra.SetStart(pVertexStart);
-        dijkstra.CalculatePath();
-        dijkstra.MarkPath();
-    }
-    if(pVertexEnd != nullptr && !pVertexEnd->IsWall()) {
-        dijkstra.SetEnd(pVertexEnd);
-        dijkstra.MarkPath();
-    }
-    if(pVertexNewWall != nullptr) {
-        pVertexNewWall->MakeWall();
+        dijkstra.InitCalculation();
     }
 
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
-        dijkstra.CalculatePath();
-        dijkstra.MarkPath();
+    if(pVertexEnd != nullptr && !pVertexEnd->IsWall()) {
+        dijkstra.SetEnd(pVertexEnd);
+        dijkstra.InitCalculation();
+    }
+
+    if(pVertexNewWall != nullptr) {
+        pVertexNewWall->MakeWall();
+        dijkstra.SetNotCalculated();
     }
 
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
@@ -56,9 +69,8 @@ void Game::Update() {
         dijkstra.Reset();
     }
 
-    if(input.IsKeyUp(Input::Key::MiddleMosue)) {
-        dijkstra.CalculatePath();
-        dijkstra.MarkPath();
+    if(input.IsKeyUp(Input::Key::MiddleMouse)) {
+        dijkstra.InitCalculation();
     }
 
     window.Update();
@@ -73,5 +85,5 @@ void Game::Draw() {
 }
 
 void Game::GatherInput() {
-
+    input.Update();
 }

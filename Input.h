@@ -8,15 +8,16 @@
 
 class Input {
 public:
+    Input();
     enum Key {
         LeftMouse = 0,
         RightMouse = 1,
-        MiddleMosue = 2
+        MiddleMouse = 2
     };
     void Update();
-    bool IsKeyPressed(Key keycode);
-    bool IsKeyDown(Key keycode);
-    bool IsKeyUp(Key keycode);
+    bool IsKeyPressed(Key keycode) const;
+    bool IsKeyDown(Key keycode) const;
+    bool IsKeyUp(Key keycode) const;
 private:
     unsigned short currentFrameKeys;
     unsigned short lastFrameKeys;

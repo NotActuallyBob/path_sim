@@ -10,6 +10,8 @@ add_executable(path_sim main.cpp
         Window.h
         Vertex.cpp
         Vertex.h
+        Map.cpp
+        Map.h
 )
 
 set(SFML_STATIC_LIBRARIES TRUE)

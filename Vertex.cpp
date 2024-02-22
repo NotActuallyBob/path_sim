@@ -18,3 +18,12 @@ float Vertex::GetDistance(Vertex &vertex) const {
 void Vertex::Draw(Window *pWindow) {
     pWindow->Draw(rect);
 }
+
+Vertex::Vertex(unsigned int size, float x, float y) {
+    rect = sf::RectangleShape(sf::Vector2f(size, size));
+    rect.setPosition(x, y);
+}
+
+void Vertex::Color(sf::Color color) {
+    rect.setFillColor(color);
+}

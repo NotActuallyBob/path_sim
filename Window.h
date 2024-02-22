@@ -16,6 +16,7 @@ public:
     void Draw(const sf::Drawable& drawable);
     void EndDraw();
     bool IsOpen() const;
+    sf::Vector2i GetMousePosition();
 private:
     sf::RenderWindow renderWindow;
 };

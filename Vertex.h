@@ -10,7 +10,9 @@
 
 class Vertex {
 public:
+    Vertex(unsigned int size, float x, float y);
     void Draw(Window* pWindow);
+    void Color(sf::Color color);
     float GetDistance(Vertex& vertex) const;
     sf::Vector2f GetPosition() const;
 private:

@@ -6,6 +6,7 @@
 #define PATH_SIM_GAME_H
 
 #include "Window.h"
+#include "Map.h"
 
 class Game {
 public:
@@ -16,6 +17,7 @@ public:
     bool IsRunning() const;
 private:
     Window window;
+    Map map;
 };
 
 

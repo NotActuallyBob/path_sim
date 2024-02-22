@@ -36,3 +36,7 @@ void Window::BeginDraw() {
 void Window::EndDraw() {
     renderWindow.display();
 }
+
+sf::Vector2i Window::GetMousePosition() {
+    return sf::Mouse::getPosition(renderWindow);
+}

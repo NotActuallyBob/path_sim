@@ -2,6 +2,7 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/Event.hpp>
 #include "Game.h"
+#include "Vertex.h"
 
 int main() {
 

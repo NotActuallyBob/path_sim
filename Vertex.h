@@ -10,14 +10,17 @@
 
 class Vertex {
 public:
-    Vertex(unsigned int size, float x, float y);
+    Vertex(unsigned int size, float x, float y, unsigned int id);
     void Draw(Window* pWindow);
     void Color(sf::Color color);
+
     float GetDistance(Vertex& vertex) const;
-    sf::Vector2u GetPosition() const;
+    sf::Vector2u GetCoordinate() const;
+    unsigned int GetId() const;
 private:
-    sf::Vector2u cordinates;
+    sf::Vector2u coordinate;
     sf::RectangleShape rect;
+    unsigned int id;
 };
 
 

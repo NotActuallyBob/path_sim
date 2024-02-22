@@ -3,10 +3,11 @@
 //
 
 #include <SFML/Window/Mouse.hpp>
+#include <SFML/Window/Keyboard.hpp>
 #include "Game.h"
 
 Game::Game()
-    : window("Path Simulator"), map(100, 50){
+    : window("Path Simulator"), map(100, 50), dijkstra(map){
 
 }
 
@@ -25,14 +26,15 @@ void Game::Update() {
     }
 
     if(pVertexStart != nullptr) {
-        pVertexStart->Color(sf::Color::Green);
-        map.GetNeighbors(*pVertexStart);
+        dijkstra.SetStart(pVertexStart);
     }
     if(pVertexEnd != nullptr) {
-        pVertexEnd->Color(sf::Color::Red);
+        dijkstra.SetEnd(pVertexEnd);
     }
 
-
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+        dijkstra.MarkPath();
+    }
 
     window.Update();
 }

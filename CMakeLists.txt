@@ -12,6 +12,10 @@ add_executable(path_sim main.cpp
         Vertex.h
         Map.cpp
         Map.h
+        Dijkstra.cpp
+        Dijkstra.h
+        PriorityQueue.cpp
+        PriorityQueue.h
 )
 
 set(SFML_STATIC_LIBRARIES TRUE)

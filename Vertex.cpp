@@ -5,8 +5,8 @@
 #include <valarray>
 #include "Vertex.h"
 
-sf::Vector2u Vertex::GetPosition() const {
-    return cordinates;
+sf::Vector2u Vertex::GetCoordinate() const {
+    return coordinate;
 }
 
 float Vertex::GetDistance(Vertex &vertex) const {
@@ -19,13 +19,18 @@ void Vertex::Draw(Window *pWindow) {
     pWindow->Draw(rect);
 }
 
-Vertex::Vertex(unsigned int size, float x, float y) {
+Vertex::Vertex(unsigned int size, float x, float y, unsigned int id)
+    :id(id){
     rect = sf::RectangleShape(sf::Vector2f(size, size));
     rect.setPosition(x * size, y * size);
 
-    cordinates = sf::Vector2u(x, y);
+    coordinate = sf::Vector2u(x, y);
 }
 
 void Vertex::Color(sf::Color color) {
     rect.setFillColor(color);
+}
+
+unsigned int Vertex::GetId() const {
+    return id;
 }

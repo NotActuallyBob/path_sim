@@ -14,9 +14,10 @@ public:
     Vertex* GetVertexAtPosition(sf::Vector2i position);
     void Draw(Window* window);
 
+    Vertex* GetById(int id);
     std::vector<Vertex*> GetVertices();
-    std::vector<Vertex*> GetNeighbors(Vertex vertex);
-    int CoordinateToIndex(sf::Vector2u& coordinate);
+    std::vector<Vertex*> GetNeighbors(Vertex* vertex);
+    unsigned int CoordinateToIndex(sf::Vector2u& coordinate) const;
 private:
     std::vector<Vertex*> vertices;
     unsigned int tileSize;

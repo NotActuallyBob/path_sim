@@ -10,21 +10,47 @@ Dijkstra::Dijkstra(Map &map)
     : map(map){
     pVertexStart = nullptr;
     pVertexEnd = nullptr;
+    isCalculated = false;
 }
 
 void Dijkstra::MarkPath() {
+    if(!isCalculated) {
+        return;
+    }
+
+    map.Clear();
+
+    Vertex* iterate = pVertexEnd;
+    while(iterate != pVertexStart) {
+        iterate->ColorPath();
+        iterate = map.GetById(prev[iterate->GetId()]);
+    }
+}
+
+void Dijkstra::SetStart(Vertex *start) {
+    pVertexStart = start;
+    pVertexStart->Color(sf::Color::Green);
+}
+
+void Dijkstra::SetEnd(Vertex *end) {
+    pVertexEnd = end;
+    pVertexEnd->Color(sf::Color::Red);
+}
+
+void Dijkstra::CalculatePath() {
     if(pVertexStart == nullptr || pVertexEnd == nullptr) {
         return;
     }
 
     PriorityQueue pq = PriorityQueue();
-    std::map<unsigned int, unsigned int> distance;
-    std::map<unsigned int, int> prev;
 
     std::vector<Vertex *> allVertices = map.GetVertices();
 
     distance[pVertexStart->GetId()] = 0;
     for(auto vertex : allVertices) {
+        if(vertex->IsWall()) {
+            continue;
+        }
         if(vertex != pVertexStart) {
             distance[vertex->GetId()] = INT32_MAX;
             prev[vertex->GetId()] = -1;
@@ -46,19 +72,5 @@ void Dijkstra::MarkPath() {
         }
     }
 
-    Vertex* iterate = pVertexEnd;
-    while(iterate != pVertexStart) {
-        iterate->Color(sf::Color::Yellow);
-        iterate = map.GetById(prev[iterate->GetId()]);
-    }
-}
-
-void Dijkstra::SetStart(Vertex *start) {
-    pVertexStart = start;
-    pVertexStart->Color(sf::Color::Green);
-}
-
-void Dijkstra::SetEnd(Vertex *end) {
-    pVertexEnd = end;
-    pVertexEnd->Color(sf::Color::Red);
+    isCalculated = true;
 }

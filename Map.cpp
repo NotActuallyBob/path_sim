@@ -56,6 +56,9 @@ void Map::AddUpNeighbor(sf::Vector2u vertexCoordinate, std::vector<Vertex *> *pN
 
     int vertexIndex = CoordinateToIndex(vertexCoordinate);
     Vertex* pUpNeighbor = vertices[vertexIndex - 1];
+    if(pUpNeighbor->IsWall()) {
+        return;
+    }
     pNeighbors->push_back(pUpNeighbor);
 }
 
@@ -66,6 +69,9 @@ void Map::AddDownNeighbor(sf::Vector2u vertexCoordinate, std::vector<Vertex *> *
 
     int vertexIndex = CoordinateToIndex(vertexCoordinate);
     Vertex* pUpNeighbor = vertices[vertexIndex + 1];
+    if(pUpNeighbor->IsWall()) {
+        return;
+    }
     pNeighbors->push_back(pUpNeighbor);
 }
 
@@ -76,6 +82,9 @@ void Map::AddRightNeighbor(sf::Vector2u vertexCoordinate, std::vector<Vertex *> 
 
     int vertexIndex = CoordinateToIndex(vertexCoordinate);
     Vertex* pUpNeighbor = vertices[vertexIndex + dimensions.y];
+    if(pUpNeighbor->IsWall()) {
+        return;
+    }
     pNeighbors->push_back(pUpNeighbor);
 }
 
@@ -86,6 +95,9 @@ void Map::AddLeftNeighbor(sf::Vector2u vertexCoordinate, std::vector<Vertex *> *
 
     int vertexIndex = CoordinateToIndex(vertexCoordinate);
     Vertex* pUpNeighbor = vertices[vertexIndex - dimensions.y];
+    if(pUpNeighbor->IsWall()) {
+        return;
+    }
     pNeighbors->push_back(pUpNeighbor);
 }
 
@@ -98,6 +110,14 @@ Vertex *Map::GetById(int id) {
     for(Vertex* vertex : vertices) {
         if(vertex->GetId() == id) {
             return vertex;
+        }
+    }
+}
+
+void Map::Clear() {
+    for(auto it : vertices) {
+        if(!it->IsWall()) {
+            it->Color(sf::Color::White);
         }
     }
 }

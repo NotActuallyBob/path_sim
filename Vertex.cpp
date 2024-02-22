@@ -9,10 +9,12 @@ sf::Vector2u Vertex::GetCoordinate() const {
     return coordinate;
 }
 
-float Vertex::GetDistance(Vertex &vertex) const {
-    sf::Vector2f positionOwn = rect.getPosition();
-    sf::Vector2f positionOther = vertex.rect.getPosition();
-    return std::sqrt(positionOwn.x * positionOther.x + positionOwn.y * positionOther.y);
+unsigned int Vertex::GetDistance(Vertex &vertex) const {
+    int diff = coordinate.x - vertex.coordinate.x + coordinate.y - vertex.coordinate.y;
+    if(diff < 0) {
+        return -1 * diff;
+    }
+    return diff;
 }
 
 void Vertex::Draw(Window *pWindow) {
@@ -25,6 +27,7 @@ Vertex::Vertex(unsigned int size, float x, float y, unsigned int id)
     rect.setPosition(x * size, y * size);
 
     coordinate = sf::Vector2u(x, y);
+    isWall = false;
 }
 
 void Vertex::Color(sf::Color color) {
@@ -33,4 +36,19 @@ void Vertex::Color(sf::Color color) {
 
 unsigned int Vertex::GetId() const {
     return id;
+}
+
+void Vertex::MakeWall() {
+    isWall = true;
+    Color(sf::Color::Black);
+}
+
+bool Vertex::IsWall() const {
+    return isWall;
+}
+
+void Vertex::ColorPath() {
+    if(rect.getFillColor() != sf::Color::Green && rect.getFillColor() != sf::Color::Red) {
+        Color(sf::Color::Yellow);
+    }
 }

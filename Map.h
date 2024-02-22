@@ -13,6 +13,7 @@ public:
     Map(unsigned int width, unsigned int height);
     Vertex* GetVertexAtPosition(sf::Vector2i position);
     void Draw(Window* window);
+    void Clear();
 
     Vertex* GetById(int id);
     std::vector<Vertex*> GetVertices();

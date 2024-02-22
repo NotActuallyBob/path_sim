@@ -13,14 +13,18 @@ public:
     Vertex(unsigned int size, float x, float y, unsigned int id);
     void Draw(Window* pWindow);
     void Color(sf::Color color);
+    void MakeWall();
+    void ColorPath();
+    bool IsWall() const;
 
-    float GetDistance(Vertex& vertex) const;
+    unsigned int GetDistance(Vertex& vertex) const;
     sf::Vector2u GetCoordinate() const;
     unsigned int GetId() const;
 private:
     sf::Vector2u coordinate;
     sf::RectangleShape rect;
     unsigned int id;
+    bool isWall;
 };
 
 

@@ -17,22 +17,36 @@ bool Game::IsRunning() const {
 
 void Game::Update() {
     Vertex* pVertexStart = nullptr;
+    Vertex* pVertexNewWall = nullptr;
     Vertex* pVertexEnd = nullptr;
     if(sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
         pVertexStart = map.GetVertexAtPosition(window.GetMousePosition());
     }
+
     if(sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
         pVertexEnd = map.GetVertexAtPosition(window.GetMousePosition());
     }
 
+    if(sf::Mouse::isButtonPressed(sf::Mouse::Middle)) {
+        pVertexNewWall = map.GetVertexAtPosition(window.GetMousePosition());
+    }
+
     if(pVertexStart != nullptr) {
         dijkstra.SetStart(pVertexStart);
+        dijkstra.MarkPath();
     }
     if(pVertexEnd != nullptr) {
         dijkstra.SetEnd(pVertexEnd);
+        dijkstra.MarkPath();
+    }
+    if(pVertexNewWall != nullptr) {
+        pVertexNewWall->MakeWall();
+        dijkstra.CalculatePath();
+        dijkstra.MarkPath();
     }
 
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+        dijkstra.CalculatePath();
         dijkstra.MarkPath();
     }
 

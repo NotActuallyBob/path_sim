@@ -26,10 +26,12 @@ void Game::Update() {
 
     if(pVertexStart != nullptr) {
         pVertexStart->Color(sf::Color::Green);
+        map.GetNeighbors(*pVertexStart);
     }
     if(pVertexEnd != nullptr) {
         pVertexEnd->Color(sf::Color::Red);
     }
+
 
 
     window.Update();

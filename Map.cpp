@@ -10,7 +10,7 @@ Map::Map(unsigned int width, unsigned int height) {
     dimensions = sf::Vector2i(width, height);
     for(int i = 0; i < width; ++i) {
         for(int j = 0; j < height; j++) {
-            auto pVertex = new Vertex(tileSize, tileSize * i, tileSize * j);
+            auto pVertex = new Vertex(tileSize, i, j);
             vertices.push_back(pVertex);
         }
     }
@@ -30,6 +30,67 @@ Vertex *Map::GetVertexAtPosition(sf::Vector2i position) {
         return nullptr;
     }
 
-
     return vertices[y + dimensions.y * x];
+}
+
+std::vector<Vertex *> Map::GetVertices() {
+    return vertices;
+}
+
+std::vector<Vertex *> Map::GetNeighbors(Vertex vertex) {
+    std::vector<Vertex*> neighbors = std::vector<Vertex*>();
+    sf::Vector2u cordinate = vertex.GetPosition();
+    int x = cordinate.x;
+    int y = cordinate.y;
+
+    AddDownNeighbor(cordinate, &neighbors);
+    AddUpNeighbor(cordinate, &neighbors);
+    AddLeftNeighbor(cordinate, &neighbors);
+    AddRightNeighbor(cordinate, &neighbors);
+    return neighbors;
+}
+
+void Map::AddUpNeighbor(sf::Vector2u vertexCoordinate, std::vector<Vertex *> *pNeighbors) {
+    if(vertexCoordinate.y == 0) {
+        return;
+    }
+
+    int vertexIndex = CoordinateToIndex(vertexCoordinate);
+    Vertex* pUpNeighbor = vertices[vertexIndex - 1];
+    pNeighbors->push_back(pUpNeighbor);
+}
+
+void Map::AddDownNeighbor(sf::Vector2u vertexCoordinate, std::vector<Vertex *> *pNeighbors) {
+    if(vertexCoordinate.y == dimensions.y - 1) {
+        return;
+    }
+
+    int vertexIndex = CoordinateToIndex(vertexCoordinate);
+    Vertex* pUpNeighbor = vertices[vertexIndex + 1];
+    pNeighbors->push_back(pUpNeighbor);
+}
+
+void Map::AddRightNeighbor(sf::Vector2u vertexCoordinate, std::vector<Vertex *> *pNeighbors) {
+    if(vertexCoordinate.x == dimensions.x - 1) {
+        return;
+    }
+
+    int vertexIndex = CoordinateToIndex(vertexCoordinate);
+    Vertex* pUpNeighbor = vertices[vertexIndex + dimensions.y];
+    pNeighbors->push_back(pUpNeighbor);
+}
+
+void Map::AddLeftNeighbor(sf::Vector2u vertexCoordinate, std::vector<Vertex *> *pNeighbors) {
+    if(vertexCoordinate.x == 0) {
+        return;
+    }
+
+    int vertexIndex = CoordinateToIndex(vertexCoordinate);
+    Vertex* pUpNeighbor = vertices[vertexIndex - dimensions.y];
+    pNeighbors->push_back(pUpNeighbor);
+}
+
+int Map::CoordinateToIndex(sf::Vector2u& coordinate) {
+    int index = coordinate.y + dimensions.y * coordinate.x;
+    return index;
 }

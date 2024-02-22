@@ -14,8 +14,9 @@ public:
     void Draw(Window* pWindow);
     void Color(sf::Color color);
     float GetDistance(Vertex& vertex) const;
-    sf::Vector2f GetPosition() const;
+    sf::Vector2u GetPosition() const;
 private:
+    sf::Vector2u cordinates;
     sf::RectangleShape rect;
 };
 

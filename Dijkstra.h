@@ -28,6 +28,7 @@ private:
     Vertex* pVertexEnd;
     bool isCalculated;
     bool isSolving;
+    int tilesToSearchPerUpdate;
 
     PriorityQueue pq;
     unsigned int searchedRadius;

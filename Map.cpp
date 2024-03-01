@@ -117,7 +117,7 @@ Vertex *Map::GetById(int id) {
 void Map::Clear() {
     for(auto it : vertices) {
         if(!it->IsWall()) {
-            it->Color(sf::Color::White);
+            it->setColor(sf::Color::White);
         }
     }
 }

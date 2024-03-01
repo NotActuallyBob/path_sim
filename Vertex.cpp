@@ -6,11 +6,11 @@
 #include "Vertex.h"
 
 sf::Vector2u Vertex::GetCoordinate() const {
-    return coordinate;
+    return position;
 }
 
 unsigned int Vertex::GetDistance(Vertex &vertex) const {
-    int diff = coordinate.x - vertex.coordinate.x + coordinate.y - vertex.coordinate.y;
+    int diff = position.x - vertex.position.x + position.y - vertex.position.y;
     if(diff < 0) {
         return -1 * diff;
     }
@@ -21,16 +21,16 @@ void Vertex::Draw(Window *pWindow) {
     pWindow->Draw(rect);
 }
 
-Vertex::Vertex(unsigned int size, float x, float y, unsigned int id)
-    :id(id){
-    rect = sf::RectangleShape(sf::Vector2f(size, size));
-    rect.setPosition(x * size, y * size);
+Vertex::Vertex(unsigned int sizeValue, unsigned int x, unsigned int y, unsigned int id)
+    : id(id), position(sf::Vector2u(x, y)), size(sf::Vector2u(sizeValue, sizeValue)) {
+    rect = sf::RectangleShape();
 
-    coordinate = sf::Vector2u(x, y);
+    rect.setPosition(sf::Vector2f(position.x * size.x, position.y * size.y));
+    rect.setSize(sf::Vector2f(size.x, size.y));
     isWall = false;
 }
 
-void Vertex::Color(sf::Color color) {
+void Vertex::setColor(sf::Color color) {
     rect.setFillColor(color);
 }
 
@@ -40,7 +40,7 @@ unsigned int Vertex::GetId() const {
 
 void Vertex::MakeWall() {
     isWall = true;
-    Color(sf::Color::Black);
+    setColor(sf::Color::Black);
 }
 
 bool Vertex::IsWall() const {
@@ -49,6 +49,6 @@ bool Vertex::IsWall() const {
 
 void Vertex::ColorPath() {
     if(rect.getFillColor() != sf::Color::Green && rect.getFillColor() != sf::Color::Red) {
-        Color(sf::Color::Yellow);
+        setColor(sf::Color::Yellow);
     }
 }

@@ -15,6 +15,7 @@ Dijkstra::Dijkstra(Map &map)
     pVertexEnd = nullptr;
     isCalculated = false;
     isSolving = false;
+    tilesToSearchPerUpdate = 10;
 }
 
 void Dijkstra::MarkPath() {
@@ -33,18 +34,18 @@ void Dijkstra::MarkPath() {
 
 void Dijkstra::SetStart(Vertex *start) {
     if(pVertexStart != nullptr && !pVertexStart->IsWall()) {
-        pVertexStart->Color(sf::Color::White);
+        pVertexStart->setColor(sf::Color::White);
     }
     pVertexStart = start;
-    pVertexStart->Color(sf::Color::Green);
+    pVertexStart->setColor(sf::Color::Green);
 }
 
 void Dijkstra::SetEnd(Vertex *end) {
     if(pVertexEnd != nullptr && !pVertexEnd->IsWall()) {
-        pVertexEnd->Color(sf::Color::White);
+        pVertexEnd->setColor(sf::Color::White);
     }
     pVertexEnd = end;
-    pVertexEnd->Color(sf::Color::Red);
+    pVertexEnd->setColor(sf::Color::Red);
 }
 
 void Dijkstra::InitCalculation() {
@@ -70,16 +71,18 @@ void Dijkstra::InitCalculation() {
 }
 
 void Dijkstra::IterateCalculation() {
-    Vertex* minVertex = pq.GetTop();
-    pq.RemoveVertex(minVertex);
-    minVertex->Color(sf::Color::Cyan);
-    for(auto it : map.GetNeighbors(minVertex)) {
-        unsigned int alt = distance[minVertex->GetId()] + minVertex->GetDistance(*it);
-        if(alt < distance[it->GetId()]) {
-            distance[it->GetId()] = alt;
-            prev[it->GetId()] = minVertex->GetId();
-            pq.RemoveVertex(it);
-            pq.AddVertex(alt, it);
+    for(int i = 0; i < tilesToSearchPerUpdate; i++) {
+        Vertex* minVertex = pq.GetTop();
+        pq.RemoveVertex(minVertex);
+        minVertex->setColor(sf::Color::Cyan);
+        for(auto it : map.GetNeighbors(minVertex)) {
+            unsigned int alt = distance[minVertex->GetId()] + minVertex->GetDistance(*it);
+            if(alt < distance[it->GetId()]) {
+                distance[it->GetId()] = alt;
+                prev[it->GetId()] = minVertex->GetId();
+                pq.RemoveVertex(it);
+                pq.AddVertex(alt, it);
+            }
         }
     }
 

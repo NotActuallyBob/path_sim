@@ -10,9 +10,9 @@
 
 class Vertex {
 public:
-    Vertex(unsigned int size, float x, float y, unsigned int id);
+    Vertex(unsigned int sizeValue, unsigned int x, unsigned int y, unsigned int id);
     void Draw(Window* pWindow);
-    void Color(sf::Color color);
+    void setColor(sf::Color color);
     void MakeWall();
     void ColorPath();
     bool IsWall() const;
@@ -21,9 +21,10 @@ public:
     sf::Vector2u GetCoordinate() const;
     unsigned int GetId() const;
 private:
-    sf::Vector2u coordinate;
+    sf::Vector2u position;
+    sf::Vector2u size;
+    unsigned int const id;
     sf::RectangleShape rect;
-    unsigned int id;
     bool isWall;
 };
 
